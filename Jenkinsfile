@@ -38,6 +38,24 @@ pipeline {
               }
             }
           }  
+    stage("Create Docker Image"){
+             steps {
+	         bat "docker build -t i-rabiamehta-master, ${registry}:${BUILD_NUMBER} ."
+	     }
+	}
+	stage ("Push image to DCR"){
+	      steps{
+		       withDockerRegistry([credentialsId: 'Test_Docker', url:""]){
+			   bat "docker push ${registry}:${BUILD_NUMBER}"
+		       }
+		   }
+	}
+	stage ("Application Deployment"){
+	      steps {
+		      bat "docker run --name c-rabiamehta-master -d -p 7100:8080 ${registry}:${BUILD_NUMBER}"
+	       }
+		
+	}
 	stage ("Success"){
 	      steps{
 		    echo "The pipeline completed successfully"
