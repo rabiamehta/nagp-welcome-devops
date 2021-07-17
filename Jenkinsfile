@@ -6,12 +6,12 @@ pipeline {
     }
     environment {
 	    def mvn = tool 'Maven';
-	 
+	    SONAR_PROJECT_NAME = 'sonar-rabiamehta';
+	    SONAR_PROJECT_KEY = 'sonar-rabiamehta';
     }
     
     options {
         timestamps()
-        timeout(time: 1, unit: 'HOURS' )
     }
     
     stages {
@@ -34,10 +34,19 @@ pipeline {
     stage("Code Analysis") {
             steps {
               withSonarQubeEnv('SonarQubeScanner') {
-                bat "${mvn}/bin/mvn sonar:sonar"
+               bat 'mvn clean package sonar:sonar'
               }
             }
-          }   
+          } 
+    stage("Quality Gate") {
+            steps {
+                timeout(time: 1, unit: 'HOURS') {
+                    // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
+                    // true = set pipeline to UNSTABLE, false = don't
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }  
 	stage ("Success"){
 	      steps{
 		    echo "The pipeline completed successfully"
