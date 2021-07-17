@@ -30,7 +30,14 @@ pipeline {
             steps {
                 bat 'mvn test'
             }
-        }    
+        } 
+    stage("Code Analysis") {
+            steps {
+              withSonarQubeEnv('SonarQubeScanner') {
+                bat "${mvn}/bin/mvn sonar:sonar"
+              }
+            }
+          }   
 	stage ("Success"){
 	      steps{
 		    echo "The pipeline completed successfully"
