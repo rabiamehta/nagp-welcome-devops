@@ -26,11 +26,13 @@ pipeline {
                 bat 'mvn clean install'
             }
         }
+        
 	stage('Unit Test Cases') {
             steps {
                 bat 'mvn test'
             }
         } 
+        
     stage("Code Analysis") {
             steps {
               withSonarQubeEnv('SonarQubeScanner') {
@@ -38,21 +40,24 @@ pipeline {
               }
             }
           }  
+          
     stage("Create Docker Image"){
              steps {
-	         bat "docker build -t i-rabiamehta-master, ${registry}:${BUILD_NUMBER} ."
+	         bat "docker build -t rabiamehta/i-rabiamehta-master:${BUILD_NUMBER} ."
 	     }
 	}
-	stage ("Push image to DCR"){
+	
+	stage("Push image to DCR"){
 	      steps{
 		       withDockerRegistry([credentialsId: 'Test_Docker', url:""]){
-			   bat "docker push ${registry}:${BUILD_NUMBER}"
+			   bat "docker push rabiamehta/i-rabiamehta-master:${BUILD_NUMBER}
 		       }
 		   }
 	}
+	
 	stage ("Application Deployment"){
 	      steps {
-		      bat "docker run --name c-rabiamehta-master -d -p 7100:8080 ${registry}:${BUILD_NUMBER}"
+		      bat "docker run --name c-rabiamehta-master -d -p 7100:8080 rabiamehta/i-rabiamehta-master:${BUILD_NUMBER}"
 	       }
 		
 	}
