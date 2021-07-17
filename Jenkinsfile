@@ -50,7 +50,7 @@ pipeline {
 	stage("Push image to DCR"){
 	      steps{
 		       withDockerRegistry([credentialsId: 'Test_Docker', url:""]){
-			   bat "docker push rabiamehta/i-rabiamehta-master:${BUILD_NUMBER}
+			   bat "docker push rabiamehta/i-rabiamehta-master:${BUILD_NUMBER}"
 		       }
 		   }
 	}
