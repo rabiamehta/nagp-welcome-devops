@@ -34,7 +34,7 @@ pipeline {
     stage("Code Analysis") {
             steps {
               withSonarQubeEnv('SonarQubeScanner') {
-               bat 'mvn clean package sonar:sonar'
+               bat 'mvn sonar:sonar -Dsonar.projectKey=${SONAR_PROJECT_KEY} -D sonar.projectName=${SONAR_PROJECT_NAME}'
               }
             }
           } 
