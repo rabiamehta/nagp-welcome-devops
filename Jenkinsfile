@@ -63,7 +63,7 @@ pipeline {
 	stage ("Application Deployment"){
 	   steps {
 	        script{
-		       if('docker ps -q -f name=c-${DOCKER_REPOSITORY_NAME}-master'){
+		       if("docker ps -q -f name=c-${DOCKER_REPOSITORY_NAME}-master"){
 		              "docker stop c-${DOCKER_REPOSITORY_NAME}-master"
 		              "docker rm c-${DOCKER_REPOSITORY_NAME}-master"
 		        }
