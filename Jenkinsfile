@@ -40,12 +40,7 @@ pipeline {
               }
             }
           }  
-          
-    stage("Docker Version") {
-    		 steps {
-            echo docker --version
-          }  
-      }          
+                 
     stage("Create Docker Image"){
              steps {
 	         bat "docker build -t rabiamehta/i-rabiamehta-master:${BUILD_NUMBER} ."
