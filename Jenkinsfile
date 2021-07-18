@@ -79,5 +79,6 @@ pipeline {
 	      steps{
 		    echo "The pipeline completed successfully"
 	       }
-	    }    
+	    }
+    }
 }
