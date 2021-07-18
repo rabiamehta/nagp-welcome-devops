@@ -57,7 +57,7 @@ pipeline {
 	stage ("Application Deployment"){
 	      steps {
 	        script{
-	          if(bat "docker ps -q -f name=c-rabiamehta-master"){
+	          if(docker ps -q -f name=c-rabiamehta-master){
 	             bat "docker stop c-rabiamehta-master"
 	             bat "docker rm c-rabiamehta-master"
 	          }
