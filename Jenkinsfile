@@ -59,11 +59,12 @@ pipeline {
 	        script{
 	         
 	          if('docker ps -q -f name=c-rabiamehta-master'){
-	             bat "docker stop c-rabiamehta-master"
-	             bat "docker rm c-rabiamehta-master"
+	              "docker stop c-rabiamehta-master"
+	              "docker rm c-rabiamehta-master"
 	          }
-	          }
-		      bat "docker run --name c-rabiamehta-master -d -p 7100:8080 rabiamehta/i-rabiamehta-master:${BUILD_NUMBER}"
+	          
+		        "docker run --name c-rabiamehta-master -d -p 7100:8080 rabiamehta/i-rabiamehta-master:${BUILD_NUMBER}"
+		      }
 	       }
 		
 	}
