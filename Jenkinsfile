@@ -67,13 +67,8 @@ pipeline {
 	     echo "Starting with Application Deployment"
 	        script{
 	         CID = "docker ps -q -f status=running -f name=c-${DOCKER_REPOSITORY_NAME}-master"
-	         echo ${CID}
-		       if(${CID}){
-		             bat "docker stop c-${DOCKER_REPOSITORY_NAME}-master"
-		             bat "docker rm c-${DOCKER_REPOSITORY_NAME}-master"
-		        }
-		      }
-		  bat "docker run --name c-${DOCKER_REPOSITORY_NAME}-master -d -p 7100:8080 ${DOCKER_REPOSITORY_NAME}/i-${DOCKER_REPOSITORY_NAME}-master:${BUILD_NUMBER}"
+	         echo CID
+		     }  
 	     }
 	 }
 	
