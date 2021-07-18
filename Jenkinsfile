@@ -66,13 +66,10 @@ pipeline {
 	   steps {
 	     echo "Starting with Application Deployment"
 	        script{
-		       if("sudo docker ps -a --format '{{.Names}}' | grep -Eq c-${DOCKER_REPOSITORY_NAME}-master"){
-		             bat "docker stop c-${DOCKER_REPOSITORY_NAME}-master"
-		             bat "docker rm c-${DOCKER_REPOSITORY_NAME}-master"
-		        }
-		      }
-		  bat "docker run --name c-${DOCKER_REPOSITORY_NAME}-master -d -p 7100:8080 ${DOCKER_REPOSITORY_NAME}/i-${DOCKER_REPOSITORY_NAME}-master:${BUILD_NUMBER}"
-	     }
+	        def containerExists = sh script: "sudo docker ps -a --format '{{.Names}}' | grep -Eq c-${DOCKER_REPOSITORY_NAME}-master"
+	        echo  containerExists
+		     }
+		 }
 	 }
 	
 	 stage ("Success"){
