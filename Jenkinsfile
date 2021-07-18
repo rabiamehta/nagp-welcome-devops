@@ -66,7 +66,7 @@ pipeline {
 	   steps {
 	     echo "Starting with Application Deployment"
 	        script{
-	        def containerExists = bat "docker ps -a --format '{{.Names}}' | grep -Eq c-${DOCKER_REPOSITORY_NAME}-master"
+	        def containerExists = bat "docker ps -f status=running -f name=c-${DOCKER_REPOSITORY_NAME}-master"
 	        echo  containerExists
 		     }
 		 }
