@@ -40,7 +40,11 @@ pipeline {
               }
             }
           }  
-                 
+     stage("Docker Login"){
+             steps {
+	         bat "docker login -u rabiamehta -p Miracleofsea!"
+	     }
+	}            
     stage("Create Docker Image"){
              steps {
 	         bat "docker build -t rabiamehta/i-rabiamehta-master:${BUILD_NUMBER} ."
