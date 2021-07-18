@@ -34,40 +34,43 @@ pipeline {
         } 
         
     stage("Code Analysis") {
-            steps {
+         steps {
               withSonarQubeEnv('SonarQubeScanner') {
-               bat "mvn sonar:sonar -Dsonar.projectKey=${SONAR_PROJECT_KEY} -D sonar.projectName=${SONAR_PROJECT_NAME} -D sonar.projectVersion=${BUILD_NUMBER}"
+                bat "mvn sonar:sonar -Dsonar.projectKey=${SONAR_PROJECT_KEY} -D sonar.projectName=${SONAR_PROJECT_NAME} -D sonar.projectVersion=${BUILD_NUMBER}"
               }
-            }
-          }            
+         }
+    }  
+                    
     stage("Create Docker Image"){
-             steps {
-	         bat "docker build -t rabiamehta/i-rabiamehta-master:${BUILD_NUMBER} ."
+        steps {
+               script{
+	             "docker build -t rabiamehta/i-rabiamehta-master:${BUILD_NUMBER} ."
+	           }
 	     }
 	}
 	
 	stage("Push image to DCR"){
-	      steps{
+	    steps{
+	        script{
 		       withDockerRegistry([credentialsId: 'Test_Docker', url:""]){
-			   bat "docker push rabiamehta/i-rabiamehta-master:${BUILD_NUMBER}"
+			   "docker push rabiamehta/i-rabiamehta-master:${BUILD_NUMBER}"
 		       }
-		   }
+		     }
+		 }
 	}
 	
 	stage ("Application Deployment"){
-	      steps {
+	   steps {
 	        script{
-	         
-	          if('docker ps -q -f name=c-rabiamehta-master'){
-	              "docker stop c-rabiamehta-master"
-	              "docker rm c-rabiamehta-master"
-	          }
-	          
+		       if('docker ps -q -f name=c-rabiamehta-master'){
+		              "docker stop c-rabiamehta-master"
+		              "docker rm c-rabiamehta-master"
+		        }
 		        "docker run --name c-rabiamehta-master -d -p 7100:8080 rabiamehta/i-rabiamehta-master:${BUILD_NUMBER}"
 		      }
-	       }
-		
+	     }
 	}
+	
 	stage ("Success"){
 	      steps{
 		    echo "The pipeline completed successfully"
