@@ -65,6 +65,15 @@ pipeline {
 	 stage ("Application Deployment"){
 	   steps {
 	     echo "Starting with Application Deployment"
+		    bat """
+			"docker ps -aqf name= c-${DOCKER_REPOSITORY_NAME}-master ">tmp.txt
+			set /p comd1=<tmp.txt
+			if[%comd1%]==[](echo "no running container")
+			else(
+			docker stop %comd1%
+			docker rm -f %comd1%
+			)
+        		"""
 	      script{
 	         bat "docker run --name c-${DOCKER_REPOSITORY_NAME}-master -d -p 7100:8080 ${DOCKER_REPOSITORY_NAME}/i-${DOCKER_REPOSITORY_NAME}-master:${BUILD_NUMBER}"
 		     }
