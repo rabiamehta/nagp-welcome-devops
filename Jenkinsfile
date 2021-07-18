@@ -41,6 +41,10 @@ pipeline {
             }
           }  
           
+    stage("Docker Version") {
+            echo docker --version
+          }  
+                
     stage("Create Docker Image"){
              steps {
 	         bat "docker build -t rabiamehta/i-rabiamehta-master:${BUILD_NUMBER} --no-cache -f Dockerfile ."
