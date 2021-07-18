@@ -74,8 +74,9 @@ pipeline {
 		              "docker stop c-${DOCKER_REPOSITORY_NAME}-master"
 		              "docker rm c-${DOCKER_REPOSITORY_NAME}-master"
 		        }
-		        "docker run --name c-${DOCKER_REPOSITORY_NAME}-master -d -p 7100:8080 ${DOCKER_REPOSITORY_NAME}/i-${DOCKER_REPOSITORY_NAME}-master:${BUILD_NUMBER}"
 		      }
+		  bat "docker run --name c-${DOCKER_REPOSITORY_NAME}-master -d -p 7100:8080 ${DOCKER_REPOSITORY_NAME}/i-${DOCKER_REPOSITORY_NAME}-master:${BUILD_NUMBER}"
+		  
 	     }
 	 }
 	
