@@ -18,28 +18,24 @@ pipeline {
     stages {
      stage('Code Checkout') {
         steps {
-        echo "Performing Code Checkout from Git Repository"
 		    echo "Code checkout"
          }
      }
         
      stage('Code Build') {
        steps {
-        echo "Building Application"
                 bat 'mvn clean install'
             }
         }
         
 	 stage('Unit Test Cases') {
             steps {
-            echo "Running Application Test Cases"
                 bat 'mvn test'
             }
         } 
         
      stage("Code Analysis") {
          steps {
-          echo "Analyzing application code with Sonar"
               withSonarQubeEnv('SonarQubeScanner') {
                 bat "mvn sonar:sonar -Dsonar.projectKey=${SONAR_PROJECT_KEY} -D sonar.projectName=${SONAR_PROJECT_NAME} -D sonar.projectVersion=${BUILD_NUMBER}"
               }
@@ -48,7 +44,6 @@ pipeline {
                     
      stage("Create Docker Image"){
         steps {
-          echo "Containerizing the application with docker"
                script{
 	             "docker build -t ${DOCKER_REPOSITORY_NAME}/i-${DOCKER_REPOSITORY_NAME}-master:${BUILD_NUMBER} ."
 	           }
@@ -57,7 +52,6 @@ pipeline {
 	
 	 stage("Push image to DCR"){
 	    steps{
-	      echo "Pushing docker image to Docker Hub"
 	        script{
 		       withDockerRegistry([credentialsId: 'Test_Docker', url:""]){
 			   "docker push ${DOCKER_REPOSITORY_NAME}/i-${DOCKER_REPOSITORY_NAME}-master:${BUILD_NUMBER}"
@@ -68,7 +62,6 @@ pipeline {
 	
 	 stage ("Application Deployment"){
 	   steps {
-	     echo "Starting with Application Deployment"
 	        script{
 		       if("docker ps -q -f name=c-${DOCKER_REPOSITORY_NAME}-master"){
 		              "docker stop c-${DOCKER_REPOSITORY_NAME}-master"
