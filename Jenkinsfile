@@ -67,7 +67,6 @@ pipeline {
 	     echo "Starting with Application Deployment"
 	      script{
 	         def containerExists = bat "docker ps -f status=running -f name=c-${DOCKER_REPOSITORY_NAME}-master"
-	         echo  containerExists
 	          if(containerExists != null){
                   "docker stop c-${DOCKER_REPOSITORY_NAME}-master"
                   "docker rm c-${DOCKER_REPOSITORY_NAME}-master"
