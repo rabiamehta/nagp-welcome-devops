@@ -74,5 +74,4 @@ pipeline {
 		    echo "The pipeline completed successfully"
 	       }
 	    }    
-     }
 }
