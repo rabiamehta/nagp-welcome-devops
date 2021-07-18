@@ -39,12 +39,7 @@ pipeline {
                bat "mvn sonar:sonar -Dsonar.projectKey=${SONAR_PROJECT_KEY} -D sonar.projectName=${SONAR_PROJECT_NAME} -D sonar.projectVersion=${BUILD_NUMBER}"
               }
             }
-          }  
-     stage("Docker Login"){
-             steps {
-	         bat "docker login -u rabiamehta -p Miracleofsea!"
-	     }
-	}            
+          }            
     stage("Create Docker Image"){
              steps {
 	         bat "docker build -t rabiamehta/i-rabiamehta-master:${BUILD_NUMBER} ."
