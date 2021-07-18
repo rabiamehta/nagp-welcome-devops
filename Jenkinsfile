@@ -66,7 +66,8 @@ pipeline {
 	   steps {
 	     echo "Starting with Application Deployment"
 	        script{
-		       if("docker ps -q -f name=c-${DOCKER_REPOSITORY_NAME}-master"){
+	          CID = "docker ps -f name=c-${DOCKER_REPOSITORY_NAME}-master"
+		       if(CID){
 		             bat "docker stop c-${DOCKER_REPOSITORY_NAME}-master"
 		             bat "docker rm c-${DOCKER_REPOSITORY_NAME}-master"
 		        }
