@@ -56,7 +56,7 @@ pipeline {
 	 stage("Push image to DCR"){
 	    steps{
 	       echo "Pushing docker image to Docker Hub"
-		       withDockerRegistry([credentialsId: 'Test_Docker', url:""]){
+		       withDockerRegistry([credentialsId: 'DockerHub', url:""]){
 			   bat "docker push ${DOCKER_REPOSITORY_NAME}/i-${DOCKER_REPOSITORY_NAME}-master:${BUILD_NUMBER}"
 		     }
 		 }
@@ -66,7 +66,7 @@ pipeline {
 	   steps {
 	     echo "Starting with Application Deployment"
 	        script{
-	        def containerExists = bat "sudo docker ps -a --format '{{.Names}}' | grep -Eq c-${DOCKER_REPOSITORY_NAME}-master"
+	        def containerExists = bat "docker ps -a --format '{{.Names}}' | grep -Eq c-${DOCKER_REPOSITORY_NAME}-master"
 	        echo  containerExists
 		     }
 		 }
