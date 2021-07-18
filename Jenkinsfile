@@ -66,12 +66,7 @@ pipeline {
 	   steps {
 	     echo "Starting with Application Deployment"
 	      script{
-	         def containerExists = "docker ps -q -f status=running -f name=c-${DOCKER_REPOSITORY_NAME}-master"
-	         
-	          if(bat containerExists != null){
-                 echo " container Exists, remove it"
-	           }
-	        
+	         bat "docker run --name c-${DOCKER_REPOSITORY_NAME}-master -d -p 7100:8080 ${DOCKER_REPOSITORY_NAME}/i-${DOCKER_REPOSITORY_NAME}-master:${BUILD_NUMBER}"
 		     }
 		 }
 	 }
