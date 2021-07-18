@@ -8,6 +8,7 @@ pipeline {
 	    def mvn = tool 'Maven';
 	    SONAR_PROJECT_NAME = 'sonar-rabiamehta';
 	    SONAR_PROJECT_KEY = 'sonar-rabiamehta';
+	    DOCKER_REPOSITORY_NAME = 'rabiamehta';
     }
     
     options {
@@ -44,7 +45,7 @@ pipeline {
     stage("Create Docker Image"){
         steps {
                script{
-	             "docker build -t rabiamehta/i-rabiamehta-master:${BUILD_NUMBER} ."
+	             "docker build -t ${DOCKER_REPOSITORY_NAME}/i-${DOCKER_REPOSITORY_NAME}-master:${BUILD_NUMBER} ."
 	           }
 	     }
 	}
@@ -53,7 +54,7 @@ pipeline {
 	    steps{
 	        script{
 		       withDockerRegistry([credentialsId: 'Test_Docker', url:""]){
-			   "docker push rabiamehta/i-rabiamehta-master:${BUILD_NUMBER}"
+			   "docker push ${DOCKER_REPOSITORY_NAME}/i-${DOCKER_REPOSITORY_NAME}-master:${BUILD_NUMBER}"
 		       }
 		     }
 		 }
@@ -62,11 +63,11 @@ pipeline {
 	stage ("Application Deployment"){
 	   steps {
 	        script{
-		       if('docker ps -q -f name=c-rabiamehta-master'){
-		              "docker stop c-rabiamehta-master"
-		              "docker rm c-rabiamehta-master"
+		       if('docker ps -q -f name=c-${DOCKER_REPOSITORY_NAME}-master'){
+		              "docker stop c-${DOCKER_REPOSITORY_NAME}-master"
+		              "docker rm c-${DOCKER_REPOSITORY_NAME}-master"
 		        }
-		        "docker run --name c-rabiamehta-master -d -p 7100:8080 rabiamehta/i-rabiamehta-master:${BUILD_NUMBER}"
+		        "docker run --name c-${DOCKER_REPOSITORY_NAME}-master -d -p 7100:8080 ${DOCKER_REPOSITORY_NAME}/i-${DOCKER_REPOSITORY_NAME}-master:${BUILD_NUMBER}"
 		      }
 	     }
 	}
